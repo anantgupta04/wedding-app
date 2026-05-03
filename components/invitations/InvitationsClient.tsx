@@ -192,9 +192,7 @@ export function InvitationsClient({ weddingId, initialCards }: Props) {
 
   const filtered = useMemo(() => {
     return initialCards.filter(c => {
-      if (sideFilter !== 'all' && c.side !== sideFilter && !(sideFilter !== 'both' && c.side === 'both')) {
-        if (c.side !== sideFilter) return false
-      }
+      if (sideFilter !== 'all' && c.side !== sideFilter && c.side !== 'both') return false
       if (statusFilter !== 'all' && c.status !== statusFilter) return false
       return true
     })
