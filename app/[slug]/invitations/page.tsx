@@ -1,8 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { BudgetClient } from '@/components/budget/BudgetClient'
+import { InvitationsClient } from '@/components/invitations/InvitationsClient'
 
-export default async function BudgetPage({
+export default async function InvitationsPage({
   params,
 }: {
   params: Promise<{ slug: string }>
@@ -21,16 +21,16 @@ export default async function BudgetPage({
 
   if (!wedding) redirect('/dashboard')
 
-  const { data: categories } = await supabase
-    .from('budget_categories')
-    .select('*, budget_items(*)')
+  const { data: cards } = await supabase
+    .from('invitation_cards')
+    .select('*, invitation_contacts(*)')
     .eq('wedding_id', wedding.id)
-    .order('name', { ascending: true })
+    .order('created_at', { ascending: true })
 
   return (
-    <BudgetClient
+    <InvitationsClient
       weddingId={wedding.id}
-      categories={categories ?? []}
+      initialCards={cards ?? []}
     />
   )
 }
