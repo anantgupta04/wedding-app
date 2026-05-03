@@ -13,20 +13,32 @@ export default function LoginPage() {
   const [isSignUp, setIsSignUp] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [confirmSent, setConfirmSent] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
     setLoading(true)
 
-    const { error } = isSignUp
-      ? await supabase.auth.signUp({ email, password })
-      : await supabase.auth.signInWithPassword({ email, password })
-
-    if (error) {
-      setError(error.message)
-      setLoading(false)
-      return
+    if (isSignUp) {
+      const { data, error } = await supabase.auth.signUp({ email, password })
+      if (error) {
+        setError(error.message)
+        setLoading(false)
+        return
+      }
+      if (!data.session) {
+        setConfirmSent(true)
+        setLoading(false)
+        return
+      }
+    } else {
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
+      if (error) {
+        setError(error.message)
+        setLoading(false)
+        return
+      }
     }
 
     router.push('/dashboard')
@@ -49,6 +61,12 @@ export default function LoginPage() {
             {isSignUp ? 'Create your account' : 'Welcome back'}
           </p>
         </div>
+
+        {confirmSent && (
+          <div className="rounded-lg bg-green-50 border border-green-200 p-4 text-sm text-green-800 text-center">
+            Check your email and click the confirmation link to activate your account.
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
