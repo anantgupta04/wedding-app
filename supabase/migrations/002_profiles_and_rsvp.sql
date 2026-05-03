@@ -22,7 +22,8 @@ create policy "users can update own profile"
 
 -- Trigger: auto-create a profile row when a user signs up
 create or replace function handle_new_user()
-returns trigger language plpgsql security definer as $$
+returns trigger language plpgsql security definer
+set search_path = public as $$
 begin
   insert into profiles(user_id, email, display_name)
   values (
