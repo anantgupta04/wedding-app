@@ -2,13 +2,14 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, CalendarDays, Users, CheckSquare, Settings } from 'lucide-react'
+import { LayoutDashboard, CalendarDays, Users, CheckSquare, Send, Settings } from 'lucide-react'
 
 const navItems = [
   { label: 'Overview', icon: LayoutDashboard, href: 'overview' },
   { label: 'Events', icon: CalendarDays, href: 'events' },
   { label: 'Guests', icon: Users, href: 'guests' },
   { label: 'Tasks', icon: CheckSquare, href: 'tasks' },
+  { label: 'Invites', icon: Send, href: 'invitations' },
   { label: 'Settings', icon: Settings, href: 'settings' },
 ]
 

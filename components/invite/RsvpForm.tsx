@@ -445,6 +445,21 @@ export function RsvpForm({ weddingId, events, slug }: RsvpFormProps) {
 
     try {
       await submitToSupabase(weddingId, payload)
+      // fire-and-forget — email failure must never block the UI
+      const rsvpSummary = events
+        .filter(e => eventIds.includes(e.id))
+        .map(e => ({ eventName: e.name, status: attending ? 'attending' : 'not attending' }))
+      fetch('/api/rsvp-notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          weddingId,
+          guestName: payload.name,
+          guestEmail: payload.email ?? undefined,
+          guestPhone: payload.phone ?? undefined,
+          rsvpSummary,
+        }),
+      }).catch(() => {})
       setSubmitted(true)
     } catch {
       setError('Something went wrong. Please try again.')
