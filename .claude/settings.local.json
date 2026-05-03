@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p /Users/anantgupta/Downloads/workspace/wedding-app/app/i/\\\\[slug\\\\])",
+      "Bash(mkdir -p /Users/anantgupta/Downloads/workspace/wedding-app/app/\\\\[slug\\\\]/invite/edit)",
+      "Bash(npx tsc *)"
+    ]
+  }
+}
