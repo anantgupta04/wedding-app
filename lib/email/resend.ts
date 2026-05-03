@@ -1,7 +1,5 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 interface SendEmailOpts {
   to: string
   subject: string
@@ -9,7 +7,9 @@ interface SendEmailOpts {
 }
 
 export async function sendEmail({ to, subject, html }: SendEmailOpts): Promise<void> {
+  if (!process.env.RESEND_API_KEY) return
   try {
+    const resend = new Resend(process.env.RESEND_API_KEY)
     await resend.emails.send({
       from: 'Wedding App <noreply@resend.dev>',
       to,
